@@ -1,16 +1,13 @@
 import Header from './componentes/header/Header'
-import Filme from './componentes/filme/Filme'
-import Footer  from './componentes/footer/Footer'
+import Main from './componentes/Main/Main'
 import './App.css'
 
 function App() {
   return (
-    <div>
+   <>
       <Header/>
-      <Filme/>
-      <Footer/>
-    </div>
-    
+      <Main/>
+   </>
   )
 }
 export default App
