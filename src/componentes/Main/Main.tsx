@@ -5,11 +5,15 @@ export default function Main(){
         <main className="content-main">
             <Filme titulo= 'Barbie'
             sinopse='Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.'
-            imagem='blabla'
+            imagem='/barbie.png'
             />
-            <Filme titulo=  'Filme Barbie'
+            <Filme titulo=  'Ken'
             sinopse='Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.'
-            imagem='blabla'
+            imagem='/Ken.png'
+            />
+               <Filme titulo=  'Ken e Barbie'
+            sinopse='Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.'
+            imagem='KeneBarbie.webp'
             />
         </main>
     )
