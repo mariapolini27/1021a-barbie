@@ -1,82 +1,65 @@
-import{ useState} from 'react'
-import Filme from './../Filme/Filme'
-import './Main.css'
-type FilmeType = {
-    id:number,
-    titulo:string,
-    sinopse:string,
-    imagem:string
-}
-export default function Main(){
+import React, { useState, useEffect } from "react";
+import Filme from '../Filme/Filme'
+import axios from 'axios';
+import './Main.css';
 
-  //let textodigitado = 'Barbie'
-  const [texto,setTexto]=useState("")
-  const filmes :FilmeType[] = [   
-    {
-        id:1,
-        titulo:'Barbie',
-        sinopse:'Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.',
-        imagem:'/barbie.png'
-    },
-    { 
-        id:2,
-        titulo:  'Ken',
-        sinopse:'Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.',
-        imagem:'/Ken.png'
-    },
-    {
-        id:3,
-        titulo:  'Ken e Barbie',
-        sinopse:'Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.',
-        imagem:'KeneBarbie.webp'
+type FilmesType = {
+  id: number;
+  titulo: string;
+  descricao: string;
+  imagem: string;
+};
 
-    }
-  ]
-    function TrataTexto(e:React.ChangeEvent<HTMLInputElement>){
-       
-       // console.log(e.target.value)
-       setTexto(e.target.value)
-        
-    }
-    return(
-             <>
-            <div className="campo_pesquisa">
-                <p> Busque um filme</p>
-                <input type="text" className='botao_pesquisa' placeholder='Pesquise um Filme' onChange={TrataTexto} />
-                {!texto && <p>Resultados Para:{texto} </p> }
+//
+const URL_API = "http://localhost:3000/filmes"; 
 
-{}             
-            </div>
+export default function Main() {
+  const [texto, setTexto] = useState("");
+  const [filmes, setFilmes] = useState<FilmesType[]>([]);
 
-        <main className="content-main">
-                {/* 
-                    Use algo do vetor para tentar criar os filmes 
-                */}
-                {
-                    filmes.filter((filme)=>filme.titulo.toLowerCase().includes(texto)).map(
-                        (filme)=>
-                            <Filme 
-                                key={filme.id}
-                                sinopse={filme.sinopse}
-                                titulo={filme.titulo}
-                                imagem={filme.imagem}
-                            />
-                    )
-                }
+  useEffect(() => {
+    const buscarFilmes = async () => {
+      try {
+        const resposta = await axios.get<FilmesType[]>(URL_API);
+        setFilmes(resposta.data);
+      } catch (error) {
+        console.log('Erro ao buscar os dados:');
+      }
+    };
 
-            <Filme titulo= 'Barbie'
-            sinopse='Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.'
-            imagem='/barbie.png'
+    buscarFilmes();
+  }, []);
+//
+
+  function muda_txt(e: React.ChangeEvent<HTMLInputElement>) {
+    setTexto(e.target.value);
+  }
+
+  
+  return (
+    <>
+      <div className="pesquisa">
+        <p>Buscar Filme</p>
+        <input className="barrapesquisa" type="text" onChange={muda_txt}></input>
+        <div>
+          <p className="txt_digitado">Pesquisa: {texto}</p>
+        </div>
+      </div>
+
+      <main className="content_main">
+        {filmes
+          .filter((filme) =>
+            filme.titulo.toLowerCase().includes(texto.toLowerCase())
+          )
+          .map((filme) => (
+            <Filme
+              key={filme.id}
+              descricao={filme.descricao}
+              titulo={filme.titulo}
+              imagem={filme.imagem}
             />
-            <Filme titulo=  'Ken'
-            sinopse='Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.'
-            imagem='/Ken.png'
-            />
-               <Filme titulo=  'Ken e Barbie'
-            sinopse='Depois de ser expulsa da Barbieland por ser uma boneca de aparência menos do que perfeita, Barbie parte para o mundo humano em busca da verdadeira felicidade.'
-            imagem='KeneBarbie.webp'
-            />
-        </main>
-        </>
-    )
+          ))}
+      </main>
+    </>
+  );
 }
